@@ -52,12 +52,14 @@ require_once 'header.php';
      </form>
      <hr>
    <?endif;?>
+
    <?php foreach ($f->getBlogRecordings() as $item):?>
      <div class="messages">
        <p>Автор: <?=$item['author'] . "\t"?>| Дата: <?=$item['datetime']?></p>
        <hr>
          <div><?=$item['txt']?></div>
          <br>
+
          <?php foreach($f->getCommentRecordings() as $comm): ?>
             <?php if($item['blog_id'] == $comm['blog_id']): ?>
              <div class="messages">
@@ -67,6 +69,7 @@ require_once 'header.php';
              </div>
             <?php endif; ?>
          <?php endforeach; ?>
+
        <?php if(isset($_SESSION['user']) && $_SESSION['user'] == $item['author']):?>
        <form action="blog.php" method="post">
           <input type="hidden" name="edit" value="<?=$item['datetime']?>">
@@ -79,21 +82,22 @@ require_once 'header.php';
           <input type="hidden" name="txt_delete" value="<?=$item['txt']?>">
           <input type="submit" value="Видалити">
        </form>
+
        <?php elseif(isset($_SESSION['user']) && $_SESSION['user'] != $item['author']):?>
        <form action="blog.php" method="post">
 <!--           Comment to-->
            <input type="hidden" name="comment_to" value="<?=$item['blog_id']?>">
-           <?php foreach($f->getUser() as $val):;?>
+         <?php foreach($f->getUser() as $val):;?>
            <?php if($val[1] == $_SESSION['user']):;?>
 <!--           Comment from-->
            <input type="hidden" name="comment_from" value="<?=$val[0]?>">
-            <?php endif;?>
-           <?php endforeach;?>
+       <?php endif;?>
+         <?php endforeach;?>
            <input type="text" name="comment"><br>
            <input type="submit" value="Коментувати">
        </form>
        <?endif;?>
-       </div>
+     </div>
    <?php endforeach; ?>
 </div>
 
